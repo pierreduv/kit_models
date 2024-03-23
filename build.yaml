@@ -1,0 +1,8 @@
+builders:
+  tableGenBuilder:
+    import: "package:kit_code_generator/table_gen_builder.dart"
+    builder_factories: ["tableGenBuilder"]
+    build_extensions: { ".dart": [ ".dart.info" ] }
+    build_to: source
+    auto_apply: root_package
+
