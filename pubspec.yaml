@@ -1,8 +1,7 @@
 
-name: 'kit_models'
-version: '1.0.1'
-description: ''
-homepage: 'homepage'
+name: kit_models
+version: 1.0.2
+description: Base for all models
 publish_to: none
 
 environment:
