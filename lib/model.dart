@@ -4,11 +4,14 @@ typedef Json = Map<String,dynamic>;
 
 
 abstract class Model {
-  ModelCompanion? _companion;
-  ModelCompanion get companion {
-    _companion ??= newModelCompanion(this);
-    return _companion!;
+
+  late ModelCompanion _companion;
+  ModelCompanion get companion => _companion;
+
+  Model() {
+    _companion = newModelCompanion(this);
   }
+
 
   ModelCompanion newModelCompanion(Model model);
 
