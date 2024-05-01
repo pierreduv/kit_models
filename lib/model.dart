@@ -99,7 +99,7 @@ abstract class Model {
     return list;
   }
 
-  static Map<String, dynamic> dartMap(Map<String, DynamoDBAttributeValue> dynamoDBMap) {
+  static Map<String, dynamic> dartMap(Map<String, dynamic> dynamoDBMap) {
     Map<String, dynamic> map = {};
     dynamoDBMap.forEach((key, value) {
       map[key] = dartValue(value);
