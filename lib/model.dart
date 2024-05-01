@@ -1,4 +1,4 @@
-import 'dart:svg';
+
 
 typedef JsonMap = Map<String,dynamic>;
 typedef JsonList = List<dynamic>;
@@ -22,7 +22,6 @@ abstract class Model {
       switch (valueType) {
         case int:
         case double:
-        case Number:
           dynamoDBAttributeValue = {'N': "$value"};
           break;
         case String:
@@ -56,6 +55,54 @@ abstract class Model {
     Map<String, DynamoDBAttributeValue> map = {};
     jsonMap.forEach((key, value) {
       map[key] = dynamoDBAttributeValue(value);
+    });
+    return map;
+  }
+
+
+  static Object? dartValue(DynamoDBAttributeValue dynamoDBAttributeValueMap) {
+    var key = dynamoDBAttributeValueMap.keys.first;
+    var value = dynamoDBAttributeValueMap.values.first;
+
+    switch (key) {
+      case 'N':
+        if ((value as String).contains('.')) {
+          return double.parse(value);
+        }
+        else {
+          return int.parse(value);
+        }
+
+      case 'S':
+        return value as String;
+
+      case 'B':
+        return (value as String) == 'true' ? true : false;
+
+      case 'L':
+        return dartList(value);
+
+      case 'M':
+        return (value as String) == 'true' ? true : false;
+
+      default:
+        return null;
+    }
+  }
+
+
+  static List<dynamic> dartList(List<DynamoDBAttributeValue> dynamoDBList) {
+    List<dynamic> list = [];
+    for (var dynamoDBAttributeValueMap in dynamoDBList) {
+      list.add(dartValue(dynamoDBAttributeValueMap));
+    }
+    return list;
+  }
+
+  static Map<String, dynamic> dartMap(Map<String, DynamoDBAttributeValue> dynamoDBMap) {
+    Map<String, dynamic> map = {};
+    dynamoDBMap.forEach((key, value) {
+      map[key] = dartValue(value);
     });
     return map;
   }
