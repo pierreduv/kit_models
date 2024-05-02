@@ -86,15 +86,23 @@ abstract class Model {
         return (value as String) == 'true' ? true : false;
 
       default:
-        return null;
+        return value;
     }
   }
 
 
-  static List<dynamic> dartList(List<DynamoDBAttributeValue> dynamoDBList) {
+  static List<dynamic> dartList(List<dynamic> dynamoDBList) {
     List<dynamic> list = [];
-    for (var dynamoDBAttributeValueMap in dynamoDBList) {
-      list.add(dartValue(dynamoDBAttributeValueMap));
+    for (var listElement in dynamoDBList) {
+      if (listElement is List) {
+        list.add(dartList(listElement));
+      }
+      else if (listElement is Map<String, dynamic>) {
+        list.add(dartMap(listElement));
+      }
+      else {
+        list.add(listElement);
+      }
     }
     return list;
   }
@@ -102,7 +110,12 @@ abstract class Model {
   static Map<String, dynamic> dartMap(Map<String, dynamic> dynamoDBMap) {
     Map<String, dynamic> map = {};
     dynamoDBMap.forEach((key, value) {
-      map[key] =dartValue(value);
+      if (value is Map && key != 'M') {
+        map[key] = dartMap({ key : value });
+      }
+      else {
+        map[key] = dartValue(value);
+      }
     });
     return map;
   }
