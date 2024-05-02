@@ -113,7 +113,7 @@ abstract class Model {
       print('"$key": $value  ');
       if (value is Map<String, dynamic>) {
         if (['M','L','N','S','B'].contains(key)) {
-          map[key] = dartValue({ key : value });
+          map[key] = dartValue(value);
         }
         else {
           map[key] = dartMap(value);
