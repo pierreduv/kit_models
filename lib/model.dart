@@ -110,8 +110,8 @@ abstract class Model {
   static Map<String, dynamic> dartMap(Map<String, dynamic> dynamoDBMap) {
     Map<String, dynamic> map = {};
     dynamoDBMap.forEach((key, value) {
-      if (value is Map && key != 'M') {
-        map[key] = dartMap({ key : value });
+      if (value is Map<String, dynamic> && key != 'M') {
+        map[key] = dartMap(value);
       }
       else {
         map[key] = dartValue(value);
