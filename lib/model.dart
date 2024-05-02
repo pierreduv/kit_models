@@ -111,11 +111,13 @@ abstract class Model {
     Map<String, dynamic> map = {};
     dynamoDBMap.forEach((key, value) {
       print('"$key": $value  ');
-      if (value is Map<String, dynamic> && key != 'M') {
-        map[key] = dartMap(value);
-      }
-      else {
-        map[key] = dartValue({ key : value });
+      if (value is Map<String, dynamic>) {
+        if (['M','L','N','S','B'].contains(key)) {
+          map[key] = dartValue({ key : value });
+        }
+        else {
+          map[key] = dartMap(value);
+        }
       }
     });
     return map;
