@@ -115,7 +115,7 @@ abstract class Model {
         map[key] = dartMap(value);
       }
       else {
-        map[key] = dartValue(value);
+        map[key] = dartValue({ key : value });
       }
     });
     return map;
